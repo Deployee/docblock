@@ -25,4 +25,11 @@ class DocBlockTest extends TestCase
         $this->assertTrue($hasAwesomeTag);
         $this->assertFalse($docBlock->hasTag(TestClass::class, 'doesNotExist'));
     }
+
+    public function testDocBlockFailOnNonExistentClass()
+    {
+        $docBlock = new DocBlock();
+        $this->expectException(\ReflectionException::class);
+        $docBlock->getTags('SomeClassThatDoesNotExist');
+    }
 }
