@@ -18,12 +18,11 @@ class DocBlock implements DocBlockInterface
     /**
      * @var
      */
-    private $blocks;
+    private static $blocks = [];
 
     public function __construct()
     {
         $this->factory = DocBlockFactory::createInstance();
-        $this->blocks = [];
     }
 
     /**
@@ -90,9 +89,9 @@ class DocBlock implements DocBlockInterface
     {
         $hash = sha1($class);
         if(!isset($this->blocks[$hash])){
-            $this->blocks[$hash] = $this->factory->create(new \ReflectionClass($class));
+            self::$blocks[$hash] = $this->factory->create(new \ReflectionClass($class));
         }
 
-        return $this->blocks[$hash];
+        return self::$blocks[$hash];
     }
 }
