@@ -4,6 +4,8 @@
 namespace Deployee\Components\DocBlock;
 
 
+use Deployee\Components\DocBlock\Test\TestClass;
+use Deployee\Components\DocBlock\Test\TestClassWithouDocBlock;
 use PHPUnit\Framework\TestCase;
 
 class DocBlockTest extends TestCase
@@ -31,5 +33,13 @@ class DocBlockTest extends TestCase
         $docBlock = new DocBlock();
         $this->expectException(\ReflectionException::class);
         $docBlock->getTags('SomeClassThatDoesNotExist');
+    }
+
+    public function testDocBlockOnClassWithoutDocBlock()
+    {
+        $docBlock = new DocBlock();
+        $this->assertSame([], $docBlock->getTagsByName(TestClassWithouDocBlock::class, 'bar'));
+        $this->assertSame([], $docBlock->getTags(TestClassWithouDocBlock::class));
+        $this->assertFalse($docBlock->hasTag(TestClassWithouDocBlock::class, 'awesome'));
     }
 }

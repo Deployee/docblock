@@ -33,15 +33,21 @@ class DocBlock implements DocBlockInterface
     public function getTags(string $class): array
     {
         $return = [];
-        $tags = $this->createDocBlock($class)->getTags();
+        try {
+            $tags = $this->createDocBlock($class)->getTags();
+        }
+        catch(\InvalidArgumentException $e){
+            return [];
+        }
+
         /* @var Generic $tag */
         foreach ($tags as $tag) {
-            if(!isset($return[$tag->getName()])){
+            if (!isset($return[$tag->getName()])) {
                 $return[$tag->getName()] = [];
             }
 
 
-            if($tag->getDescription()) {
+            if ($tag->getDescription()) {
                 $return[$tag->getName()][] = $tag->getDescription()->render();
             }
         }
@@ -58,7 +64,14 @@ class DocBlock implements DocBlockInterface
     public function getTagsByName(string $class, string $tagName): array
     {
         $return = [];
-        $tags = $this->createDocBlock($class)->getTagsByName($tagName);
+
+        try {
+            $tags = $this->createDocBlock($class)->getTagsByName($tagName);
+        }
+        catch(\InvalidArgumentException $e){
+            return [];
+        }
+
         /* @var Generic $tag */
         foreach ($tags as $tag) {
             if($tag->getDescription()) {
@@ -77,7 +90,12 @@ class DocBlock implements DocBlockInterface
      */
     public function hasTag(string $class, string $tagName): bool
     {
-        return $this->createDocBlock($class)->hasTag($tagName);
+        try {
+            return $this->createDocBlock($class)->hasTag($tagName);
+        }
+        catch(\InvalidArgumentException $e){
+            return false;
+        }
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Deployee\Components\DocBlock;
+namespace Deployee\Components\DocBlock\Test;
 
 /**
  * @foo
